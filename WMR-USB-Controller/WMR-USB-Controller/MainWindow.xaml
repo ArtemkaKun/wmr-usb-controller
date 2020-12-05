@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="512" Width="512">
     <Grid>
-        <ToggleButton Checked = "HandleCheck" Margin = "20" Width = "108" HorizontalAlignment = "Center"/> 
+        <ToggleButton Checked = "HandleCheck" Unchecked="UnhandleCheck" Margin = "20" Width = "108" HorizontalAlignment = "Center"/> 
     </Grid>
 </Window>

@@ -61,7 +61,6 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
-        <Compile Include="YUART\USB\UsbDevice.cs" />
         <Compile Include="YUART\USB\USBDevicesManager.cs" />
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
