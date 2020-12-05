@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WMR_USB_Controller"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="512" Width="512">
     <Grid>
-        <TextBox Width="200" Height="200" Name="TestBox"></TextBox>
+        <ToggleButton Checked = "HandleCheck" Margin = "20" Width = "108" HorizontalAlignment = "Center"/> 
     </Grid>
 </Window>
