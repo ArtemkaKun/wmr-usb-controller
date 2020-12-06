@@ -25,6 +25,8 @@ namespace WMR_USB_Controller
             InitializeComponent();
 
             _appName = Application.Current.MainWindow?.Title;
+
+            SetAutostartCheckboxValue();
             
             SetupTrayIconManager();
 
@@ -35,6 +37,15 @@ namespace WMR_USB_Controller
         {
             _trayIconManager = new TrayIconManager(this);
             _trayIconManager.Initialize();
+        }
+
+        private void SetAutostartCheckboxValue()
+        {
+            if (AutostartCheckbox.IsChecked == null) return;
+
+            var startupAutostartValue = _autostartRegKey.GetValue(_appName);
+            
+            AutostartCheckbox.IsChecked = startupAutostartValue != null;
         }
 
         protected override void OnStateChanged(EventArgs e)
