@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:WMR_USB_Controller"
         mc:Ignorable="d"
         Title="WMR USB Controller" Height="512" Width="512"
+        Background="Gray"
         Icon="Main.ico">
     <Grid>
         <ToggleButton Content="Disable WMR device" FontSize="24" Width="256" Height="124" Checked="DisableWmrDeviceAction" Unchecked="EnableWmrDeviceAction" HorizontalAlignment="Center"/>
