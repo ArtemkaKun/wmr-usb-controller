@@ -38,7 +38,7 @@ namespace WMR_USB_Controller.YUART.Tray_Icon
         {
             InitializeTrayOptions();
             
-            _trayIcon.ContextMenu = _disableWmrMenu;
+            _trayIcon.ContextMenu = _enableWmrMenu;
 
             _trayIcon.DoubleClick += ShowMainWindow;
         }

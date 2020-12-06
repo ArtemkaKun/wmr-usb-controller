@@ -24,6 +24,8 @@ namespace WMR_USB_Controller
             SetupAutostartManager();
 
             _usbDevicesManager.Initialize();
+
+            DisableWmrDeviceOnStartup();
         }
 
         private void SetupTrayIconManager()
@@ -36,6 +38,11 @@ namespace WMR_USB_Controller
         {
             _autostartManager = new AutostartManager(AutostartCheckbox);
             _autostartManager.Initialize();
+        }
+
+        private void DisableWmrDeviceOnStartup()
+        {
+            ChangeWmrDeviceState(false);
         }
 
         protected override void OnStateChanged(EventArgs e)
@@ -67,6 +74,7 @@ namespace WMR_USB_Controller
         public void ChangeWmrDeviceState(bool newState)
         {
             _usbDevicesManager.ActivateWmrDevice(newState);
+            WmrStatusToggle.IsChecked = !newState;
         }
 
         private void SwitchAutostartStatus(object sender, RoutedEventArgs e)
