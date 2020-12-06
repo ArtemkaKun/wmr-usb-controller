@@ -16,7 +16,8 @@ namespace WMR_USB_Controller.YUART.USB
         private const string DisableWmrCommand = "/disable";
 
         private readonly string[] _wmrNames = {
-            "Windows Mixed Reality"
+            "Windows Mixed Reality",
+            "WMR"
         };
 
         private Process _wmrOnProcess;

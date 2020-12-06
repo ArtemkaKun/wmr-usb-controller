@@ -63,6 +63,7 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Compile Include="YUART\Autostart\AutostartManager.cs" />
         <Compile Include="YUART\Tray Icon\TrayIconManager.cs" />
         <Compile Include="YUART\USB\USBDevicesManager.cs" />
         <Page Include="MainWindow.xaml">

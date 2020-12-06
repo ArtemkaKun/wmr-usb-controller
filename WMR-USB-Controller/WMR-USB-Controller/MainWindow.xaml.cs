@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows;
-using Microsoft.Win32;
+using WMR_USB_Controller.YUART.Autostart;
 using WMR_USB_Controller.YUART.Tray_Icon;
 using WMR_USB_Controller.YUART.USB;
 
@@ -11,24 +11,17 @@ namespace WMR_USB_Controller
     /// </summary>
     public partial class MainWindow
     {
-        private const string PathToAutostartRegKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
-        
-        private readonly RegistryKey _autostartRegKey = Registry.CurrentUser.OpenSubKey(PathToAutostartRegKey, true);
         private readonly UsbDevicesManager _usbDevicesManager = new UsbDevicesManager();
-        private readonly string _appExecutionPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
-        private readonly string _appName;
+        private AutostartManager _autostartManager;
         private TrayIconManager _trayIconManager;
         
         public MainWindow()
         {
             InitializeComponent();
 
-            _appName = Application.Current.MainWindow?.Title;
-
-            SetAutostartCheckboxValue();
-            
             SetupTrayIconManager();
+            SetupAutostartManager();
 
             _usbDevicesManager.Initialize();
         }
@@ -39,13 +32,10 @@ namespace WMR_USB_Controller
             _trayIconManager.Initialize();
         }
 
-        private void SetAutostartCheckboxValue()
+        private void SetupAutostartManager()
         {
-            if (AutostartCheckbox.IsChecked == null) return;
-
-            var startupAutostartValue = _autostartRegKey.GetValue(_appName);
-            
-            AutostartCheckbox.IsChecked = startupAutostartValue != null;
+            _autostartManager = new AutostartManager(AutostartCheckbox);
+            _autostartManager.Initialize();
         }
 
         protected override void OnStateChanged(EventArgs e)
@@ -70,6 +60,10 @@ namespace WMR_USB_Controller
             ChangeWmrDeviceState(true);
         }
 
+        /// <summary>
+        /// Switch WMR device status (active/disabled).
+        /// </summary>
+        /// <param name="newState">New active status of WMR device.</param>
         public void ChangeWmrDeviceState(bool newState)
         {
             _usbDevicesManager.ActivateWmrDevice(newState);
@@ -77,21 +71,7 @@ namespace WMR_USB_Controller
 
         private void SwitchAutostartStatus(object sender, RoutedEventArgs e)
         {
-            if (AutostartCheckbox.IsChecked == null || _autostartRegKey == null) return;
-            
-            SetToAutostart(AutostartCheckbox.IsChecked.Value);
-        }
-
-        private void SetToAutostart(bool autostartStatus)
-        {
-            if (autostartStatus)
-            {
-                _autostartRegKey.SetValue(_appName, _appExecutionPath);
-            }
-            else
-            {
-                _autostartRegKey.DeleteValue(_appName, false);
-            }
+            _autostartManager.SetToAutostart();
         }
     }
 }

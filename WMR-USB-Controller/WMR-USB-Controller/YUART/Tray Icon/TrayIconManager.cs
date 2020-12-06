@@ -43,18 +43,6 @@ namespace WMR_USB_Controller.YUART.Tray_Icon
             _trayIcon.DoubleClick += ShowMainWindow;
         }
 
-        private void ShowMainWindow(object _, EventArgs eventArgs)
-        {
-            HideIcon();
-            _mainWindow.Show();
-            _mainWindow.WindowState = WindowState.Normal;
-        }
-
-        private void HideIcon()
-        {
-            _trayIcon.Visible = false;
-        }
-
         private void InitializeTrayOptions()
         {
             _disableWmrMenu = new ContextMenu(new[]
@@ -68,14 +56,6 @@ namespace WMR_USB_Controller.YUART.Tray_Icon
             });
         }
 
-        /// <summary>
-        /// Makes icon visible in the tray.
-        /// </summary>
-        public void ShowIcon()
-        {
-            _trayIcon.Visible = true;
-        }
-
         private void DisableWmr(object _, EventArgs eventArgs)
         {
             _trayIcon.ContextMenu = _enableWmrMenu;
@@ -86,6 +66,28 @@ namespace WMR_USB_Controller.YUART.Tray_Icon
         {
             _trayIcon.ContextMenu = _disableWmrMenu;
             _mainWindow.ChangeWmrDeviceState(true);
+        }
+
+        private void ShowMainWindow(object _, EventArgs eventArgs)
+        {
+            HideIcon();
+            
+            _mainWindow.Show();
+            
+            _mainWindow.WindowState = WindowState.Normal;
+        }
+
+        private void HideIcon()
+        {
+            _trayIcon.Visible = false;
+        }
+
+        /// <summary>
+        /// Makes icon visible in the tray.
+        /// </summary>
+        public void ShowIcon()
+        {
+            _trayIcon.Visible = true;
         }
     }
 }
