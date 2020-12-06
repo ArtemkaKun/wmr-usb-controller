@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="512" Width="512">
     <Grid>
-        <ToggleButton Checked = "HandleCheck" Unchecked="UnhandleCheck" Margin = "20" Width = "108" HorizontalAlignment = "Center"/> 
+        <ToggleButton Content="Disable WMR device" FontSize="24" Width="256" Height="124" Checked="DisableWmrDeviceAction" Unchecked="EnableWmrDeviceAction" HorizontalAlignment="Center"/> 
     </Grid>
 </Window>
