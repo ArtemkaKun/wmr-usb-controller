@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using Microsoft.Win32;
 using WMR_USB_Controller.YUART.Tray_Icon;
 using WMR_USB_Controller.YUART.USB;
 
@@ -10,13 +11,21 @@ namespace WMR_USB_Controller
     /// </summary>
     public partial class MainWindow
     {
+        private const string PathToAutostartRegKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+        
+        private readonly RegistryKey _autostartRegKey = Registry.CurrentUser.OpenSubKey(PathToAutostartRegKey, true);
         private readonly UsbDevicesManager _usbDevicesManager = new UsbDevicesManager();
+        private readonly string _appExecutionPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+
+        private readonly string _appName;
         private TrayIconManager _trayIconManager;
         
         public MainWindow()
         {
             InitializeComponent();
 
+            _appName = Application.Current.MainWindow?.Title;
+            
             SetupTrayIconManager();
 
             _usbDevicesManager.Initialize();
@@ -33,6 +42,7 @@ namespace WMR_USB_Controller
             if (WindowState == WindowState.Minimized)
             {
                 Hide();
+                
                 _trayIconManager.ShowIcon();
             }
 
@@ -52,6 +62,25 @@ namespace WMR_USB_Controller
         public void ChangeWmrDeviceState(bool newState)
         {
             _usbDevicesManager.ActivateWmrDevice(newState);
+        }
+
+        private void SwitchAutostartStatus(object sender, RoutedEventArgs e)
+        {
+            if (AutostartCheckbox.IsChecked == null || _autostartRegKey == null) return;
+            
+            SetToAutostart(AutostartCheckbox.IsChecked.Value);
+        }
+
+        private void SetToAutostart(bool autostartStatus)
+        {
+            if (autostartStatus)
+            {
+                _autostartRegKey.SetValue(_appName, _appExecutionPath);
+            }
+            else
+            {
+                _autostartRegKey.DeleteValue(_appName, false);
+            }
         }
     }
 }

@@ -5,8 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WMR_USB_Controller"
         mc:Ignorable="d"
-        Title="MainWindow" Height="512" Width="512">
+        Title="WMR USB Controller" Height="512" Width="512">
     <Grid>
-        <ToggleButton Content="Disable WMR device" FontSize="24" Width="256" Height="124" Checked="DisableWmrDeviceAction" Unchecked="EnableWmrDeviceAction" HorizontalAlignment="Center"/> 
+        <ToggleButton Content="Disable WMR device" FontSize="24" Width="256" Height="124" Checked="DisableWmrDeviceAction" Unchecked="EnableWmrDeviceAction" HorizontalAlignment="Center"/>
+        <CheckBox Name="AutostartCheckbox" Click="SwitchAutostartStatus" Content="Add to autostart" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="50">
+            <CheckBox.LayoutTransform>
+                <ScaleTransform ScaleX="2" ScaleY="2" />
+            </CheckBox.LayoutTransform>
+        </CheckBox>
     </Grid>
 </Window>
