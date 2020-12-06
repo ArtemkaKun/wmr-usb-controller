@@ -11,7 +11,7 @@ namespace WMR_USB_Controller.YUART.USB
     {
         private const string UsbSeekerQueryString = @"SELECT * FROM Win32_PnPEntity where DeviceID Like ""USB%""";
         private const string UsbDescriptionParameterName = "Name";
-        private const string PathToDevManViewTool = @"C:\DevManView.exe";
+        private const string PathToDevManViewTool = @"DevManView.exe";
         private const string EnableWmrCommand = "/enable";
         private const string DisableWmrCommand = "/disable";
 
