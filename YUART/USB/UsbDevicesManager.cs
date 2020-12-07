@@ -1,6 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
 using System.Management;
-using System.Linq;
+using System.Windows;
 
 namespace WMR_USB_Controller.YUART.USB
 {
@@ -9,20 +9,11 @@ namespace WMR_USB_Controller.YUART.USB
     /// </summary>
     public sealed class UsbDevicesManager
     {
-        private const string UsbSeekerQueryString = @"SELECT * FROM Win32_PnPEntity where DeviceID Like ""USB%""";
-        private const string UsbDescriptionParameterName = "Name";
-        private const string PathToDevManViewTool = @"DevManView.exe";
-        private const string EnableWmrCommand = "/enable";
-        private const string DisableWmrCommand = "/disable";
+        private const string UsbSeekerQueryString = @"SELECT * FROM Win32_PnPEntity WHERE PNPClass LIKE 'Holographic'";
+        private const string PnpRootPath = "root\\CIMV2";
+        private const string CantFoundWmrDeviceMessage = "Can't find WMR device!";
 
-        private readonly string[] _wmrNames = {
-            "Windows Mixed Reality",
-            "WMR"
-        };
-
-        private Process _wmrOnProcess;
-        private Process _wmrOffProcess;
-        private string _wmrDeviceName;
+        private ManagementObject _wmrDevice;
 
         /// <summary>
         /// Initialize UsbDevicesManager class.
@@ -30,46 +21,30 @@ namespace WMR_USB_Controller.YUART.USB
         public void Initialize()
         {
             GetWmrDevice();
-            PrepareControlProcesses();
         }
 
         private void GetWmrDevice()
         {
-            using var usbSearcher = new ManagementObjectSearcher(UsbSeekerQueryString);
+            using var usbSearcher = new ManagementObjectSearcher(PnpRootPath, UsbSeekerQueryString);
 
             using var collectionUsbObjects = usbSearcher.Get();
 
-            foreach (var deviceObject in collectionUsbObjects)
+            if (collectionUsbObjects.Count == 0)
             {
-                var deviceDescription = (string)deviceObject.GetPropertyValue(UsbDescriptionParameterName);
-
-                if (!_wmrNames.Any(deviceDescription.Contains)) continue;
-
-                _wmrDeviceName = deviceDescription;
-
-                break;
+                MessageBox.Show(CantFoundWmrDeviceMessage);
+                return;
             }
+
+            GetFirstFoundedDevice(collectionUsbObjects);
         }
 
-        private void PrepareControlProcesses()
+        private void GetFirstFoundedDevice(ManagementObjectCollection collectionUsbObjects)
         {
-            _wmrOnProcess = new Process
+            foreach (ManagementObject device in collectionUsbObjects)
             {
-                StartInfo =
-                {
-                    FileName = PathToDevManViewTool,
-                    Arguments = $"{EnableWmrCommand} \"{_wmrDeviceName}\""
-                }
-            };
-
-            _wmrOffProcess = new Process
-            {
-                StartInfo =
-                {
-                    FileName = PathToDevManViewTool,
-                    Arguments = $"{DisableWmrCommand} \"{_wmrDeviceName}\""
-                }
-            };
+                _wmrDevice = device;
+                break;
+            }
         }
 
         /// <summary>
@@ -78,10 +53,24 @@ namespace WMR_USB_Controller.YUART.USB
         /// <param name="newStatus">Activate WMR device?</param>
         public void ActivateWmrDevice(bool newStatus)
         {
-            var action = newStatus ? _wmrOnProcess : _wmrOffProcess;
+            if (newStatus)
+            {
+                EnableWmrDevice();
+            }
+            else
+            {
+                DisableWmrDevice();
+            }
+        }
 
-            action.Start();
-            action.WaitForExit();
+        private void EnableWmrDevice()
+        {
+            _wmrDevice.InvokeMethod("Enable", null, null);
+        }
+
+        private void DisableWmrDevice()
+        {
+            _wmrDevice.InvokeMethod("Disable", null, null);
         }
     }
 }
