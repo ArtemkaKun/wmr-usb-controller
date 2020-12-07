@@ -9,7 +9,7 @@ namespace WMR_USB_Controller.YUART.Tray_Icon
     /// </summary>
     public sealed class TrayIconManager
     {
-        private const string PathToTrayIcon = "Main.ico";
+        private const string PathToTrayIcon = "WMR USB Controller Main Icon.ico";
         private const string ToolTipText = "WMR USB Controller";
         private const string DisableWmrMenuItemText = "Disable WMR Device";
         private const string EnableWmrMenuItemText = "Enable WMR Device";
@@ -20,9 +20,9 @@ namespace WMR_USB_Controller.YUART.Tray_Icon
             Visible = false,
             Text = ToolTipText
         };
-        
+
         private readonly MainWindow _mainWindow;
-        
+
         private ContextMenu _disableWmrMenu;
         private ContextMenu _enableWmrMenu;
 
@@ -37,7 +37,7 @@ namespace WMR_USB_Controller.YUART.Tray_Icon
         public void Initialize()
         {
             InitializeTrayOptions();
-            
+
             _trayIcon.ContextMenu = _enableWmrMenu;
 
             _trayIcon.DoubleClick += ShowMainWindow;
@@ -71,9 +71,9 @@ namespace WMR_USB_Controller.YUART.Tray_Icon
         private void ShowMainWindow(object _, EventArgs eventArgs)
         {
             HideIcon();
-            
+
             _mainWindow.Show();
-            
+
             _mainWindow.WindowState = WindowState.Normal;
         }
 

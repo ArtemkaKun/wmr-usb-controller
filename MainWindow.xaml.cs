@@ -15,7 +15,7 @@ namespace WMR_USB_Controller
 
         private AutostartManager _autostartManager;
         private TrayIconManager _trayIconManager;
-        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -50,13 +50,13 @@ namespace WMR_USB_Controller
             if (WindowState == WindowState.Minimized)
             {
                 Hide();
-                
+
                 _trayIconManager.ShowIcon();
             }
 
             base.OnStateChanged(e);
         }
-        
+
         private void DisableWmrDeviceAction(object sender, RoutedEventArgs e)
         {
             ChangeWmrDeviceState(false);

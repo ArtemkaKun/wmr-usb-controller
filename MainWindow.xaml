@@ -5,9 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WMR_USB_Controller"
         mc:Ignorable="d"
-        Title="WMR USB Controller" Height="512" Width="512"
-        Background="Gray"
-        Icon="Main.ico">
+        Title="WMR USB Controller"
+        Height="512"
+        Width="512"
+        Icon="WMR USB Controller Main Icon.ico"
+        Background="#FF5B5B5B">
     <Grid>
         <ToggleButton Name="WmrStatusToggle" Content="Disable WMR device" FontSize="24" Width="256" Height="124" Checked="DisableWmrDeviceAction" Unchecked="EnableWmrDeviceAction" HorizontalAlignment="Center"/>
         <CheckBox Name="AutostartCheckbox" Click="SwitchAutostartStatus" Content="Add to autostart" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="50">
