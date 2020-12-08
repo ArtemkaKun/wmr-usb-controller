@@ -117,5 +117,10 @@ namespace WMR_USB_Controller
         {
             _sleepModeManager.SetScreensaverModeStatus(false);
         }
+
+        private void ResetSleepModeValues(object sender, RoutedEventArgs e)
+        {
+            _sleepModeManager.ResetSleepModeValues();
+        }
     }
 }

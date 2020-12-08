@@ -13,6 +13,7 @@ namespace WMR_USB_Controller.YUART.Sleep_Mode
         private const string PathToHololensRegKeys = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Holographic";
         private const string SleepDelayRegkeyName = "IdleTimerDuration";
         private const string ScreensaverModeRegkeyName = "ScreensaverModeEnabled";
+        private const int DefaultSleepDelay = 15;
 
         private readonly RegistryKey _hololensRegKey = Registry.CurrentUser.OpenSubKey(PathToHololensRegKeys, true);
         private readonly Label _sleepDelayValueLabel;
@@ -29,13 +30,18 @@ namespace WMR_USB_Controller.YUART.Sleep_Mode
         /// </summary>
         public void Initialize()
         {
+            UpdateLabelsValues();
+        }
+
+        private void UpdateLabelsValues()
+        {
             SetCurrentSleepDelayValue();
             SetCurrentScreensaverModeStatus();
         }
 
         private void SetCurrentSleepDelayValue()
         {
-            _sleepDelayValueLabel.Content = $"{(_hololensRegKey.IsExists(SleepDelayRegkeyName) ? TimeConverter.ConvertMillisecondsIntoMinutes((int)_hololensRegKey.GetValue(SleepDelayRegkeyName)) : 15).ToString()} minutes";
+            _sleepDelayValueLabel.Content = $"{(_hololensRegKey.IsExists(SleepDelayRegkeyName) ? TimeConverter.ConvertMillisecondsIntoMinutes((int) _hololensRegKey.GetValue(SleepDelayRegkeyName)) : DefaultSleepDelay).ToString()} minutes";
         }
 
         private void SetCurrentScreensaverModeStatus()
@@ -68,6 +74,17 @@ namespace WMR_USB_Controller.YUART.Sleep_Mode
             _hololensRegKey.SetValue(ScreensaverModeRegkeyName, newStatus ? 1 : 0);
             
             SetCurrentScreensaverModeStatus();
+        }
+
+        /// <summary>
+        /// Reset sleep delay value and screensaver mode value (this function will delete keys from the registry)
+        /// </summary>
+        public void ResetSleepModeValues()
+        {
+            _hololensRegKey.DeleteValue(SleepDelayRegkeyName);
+            _hololensRegKey.DeleteValue(ScreensaverModeRegkeyName);
+            
+            UpdateLabelsValues();
         }
     }
 }
