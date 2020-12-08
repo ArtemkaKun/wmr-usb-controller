@@ -19,9 +19,10 @@ namespace WMR_USB_Controller.YUART.Sleep_Mode
         private readonly Label _sleepDelayValueLabel;
         private readonly Label _screensaverModeStatusLabel;
 
-        public SleepModeManager(Label sleepDelayValueLabel)
+        public SleepModeManager(Label sleepDelayValueLabel, Label screensaverModeStatusLabel)
         {
             _sleepDelayValueLabel = sleepDelayValueLabel;
+            _screensaverModeStatusLabel = screensaverModeStatusLabel;
         }
 
         /// <summary>
@@ -30,6 +31,7 @@ namespace WMR_USB_Controller.YUART.Sleep_Mode
         public void Initialize()
         {
             SetCurrentSleepDelayValue();
+            SetCurrentScreensaverModeStatus();
         }
 
         private void SetCurrentSleepDelayValue()
@@ -41,7 +43,15 @@ namespace WMR_USB_Controller.YUART.Sleep_Mode
         {
             return Convert.ToInt32(Math.Round(milliseconds / MillisecondsInMinute));
         }
-        
-        
+
+        private void SetCurrentScreensaverModeStatus()
+        {
+            _screensaverModeStatusLabel.Content = _hololensRegKey.IsExists(SleepDelayRegkeyName) ? ConvertIntIntoBool((int) _hololensRegKey.GetValue(ScreensaverModeRegkeyName)) : false;
+        }
+
+        private bool ConvertIntIntoBool(int value)
+        {
+            return value == 1;
+        }
     }
 }
