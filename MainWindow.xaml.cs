@@ -107,5 +107,15 @@ namespace WMR_USB_Controller
             
             SleepDelayInputField.Text = String.Empty;
         }
+
+        private void EnableScreensaverMode(object sender, RoutedEventArgs e)
+        {
+            _sleepModeManager.SetScreensaverModeStatus(true);
+        }
+        
+        private void DisableScreensaverMode(object sender, RoutedEventArgs e)
+        {
+            _sleepModeManager.SetScreensaverModeStatus(false);
+        }
     }
 }
