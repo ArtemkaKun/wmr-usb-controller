@@ -64,6 +64,7 @@
     <Compile Include="YUART\Sleep Mode\SleepModeManager.cs" />
     <Compile Include="YUART\Tray Icon\TrayIconManager.cs" />
     <Compile Include="YUART\USB\UsbDevicesManager.cs" />
+    <Compile Include="YUART\Utilities\IntBoolConverter.cs" />
     <Compile Include="YUART\Utilities\RegkeyChecker.cs" />
     <Compile Include="YUART\Utilities\TimeConverter.cs" />
     <Page Include="MainWindow.xaml">

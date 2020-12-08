@@ -46,12 +46,7 @@ namespace WMR_USB_Controller.YUART.Sleep_Mode
 
         private void SetCurrentScreensaverModeStatus()
         {
-            _screensaverModeStatusLabel.Content = _hololensRegKey.IsExists(ScreensaverModeRegkeyName) && ConvertIntIntoBool((int) _hololensRegKey.GetValue(ScreensaverModeRegkeyName));
-        }
-
-        private bool ConvertIntIntoBool(int value)
-        {
-            return value == 1;
+            _screensaverModeStatusLabel.Content = _hololensRegKey.IsExists(ScreensaverModeRegkeyName) && ((int) _hololensRegKey.GetValue(ScreensaverModeRegkeyName)).ConvertIntToBool();
         }
 
         /// <summary>
@@ -71,7 +66,7 @@ namespace WMR_USB_Controller.YUART.Sleep_Mode
         /// <param name="newStatus">New status (on/off)</param>
         public void SetScreensaverModeStatus(bool newStatus)
         {
-            _hololensRegKey.SetValue(ScreensaverModeRegkeyName, newStatus ? 1 : 0);
+            _hololensRegKey.SetValue(ScreensaverModeRegkeyName, newStatus.ConvertBoolToInt());
             
             SetCurrentScreensaverModeStatus();
         }
