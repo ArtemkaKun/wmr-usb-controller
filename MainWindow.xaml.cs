@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Input;
 using WMR_USB_Controller.YUART.Autostart;
 using WMR_USB_Controller.YUART.Sleep_Mode;
 using WMR_USB_Controller.YUART.Tray_Icon;
@@ -89,6 +91,12 @@ namespace WMR_USB_Controller
         private void SwitchAutostartStatus(object sender, RoutedEventArgs e)
         {
             _autostartManager.SetToAutostart();
+        }
+        
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            var regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }
