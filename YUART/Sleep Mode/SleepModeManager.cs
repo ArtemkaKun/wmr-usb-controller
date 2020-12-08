@@ -13,8 +13,7 @@ namespace WMR_USB_Controller.YUART.Sleep_Mode
         private const string PathToHololensRegKeys = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Holographic";
         private const string SleepDelayRegkeyName = "IdleTimerDuration";
         private const string ScreensaverModeRegkeyName = "ScreensaverModeEnabled";
-        private const double MillisecondsInMinute = 60000d;
-        
+
         private readonly RegistryKey _hololensRegKey = Registry.CurrentUser.OpenSubKey(PathToHololensRegKeys, true);
         private readonly Label _sleepDelayValueLabel;
         private readonly Label _screensaverModeStatusLabel;
@@ -36,12 +35,7 @@ namespace WMR_USB_Controller.YUART.Sleep_Mode
 
         private void SetCurrentSleepDelayValue()
         {
-            _sleepDelayValueLabel.Content = $"{(_hololensRegKey.IsExists(SleepDelayRegkeyName) ? ConvertMillisecondsIntoMinutes((int)_hololensRegKey.GetValue(SleepDelayRegkeyName)) : 15).ToString()} minutes";
-        }
-
-        private int ConvertMillisecondsIntoMinutes(int milliseconds)
-        {
-            return Convert.ToInt32(Math.Round(milliseconds / MillisecondsInMinute));
+            _sleepDelayValueLabel.Content = $"{(_hololensRegKey.IsExists(SleepDelayRegkeyName) ? TimeConverter.ConvertMillisecondsIntoMinutes((int)_hololensRegKey.GetValue(SleepDelayRegkeyName)) : 15).ToString()} minutes";
         }
 
         private void SetCurrentScreensaverModeStatus()
@@ -52,6 +46,17 @@ namespace WMR_USB_Controller.YUART.Sleep_Mode
         private bool ConvertIntIntoBool(int value)
         {
             return value == 1;
+        }
+
+        /// <summary>
+        /// Set new value to regkey of sleep delay for WMR.
+        /// </summary>
+        /// <param name="newDelayInMinutes">New value of the sleep delay in minutes.</param>
+        public void SetNewSleepDelay(int newDelayInMinutes)
+        {
+            _hololensRegKey.SetValue(SleepDelayRegkeyName, TimeConverter.ConvertMinutesIntoMilliseconds(newDelayInMinutes));
+            
+            SetCurrentSleepDelayValue();
         }
     }
 }

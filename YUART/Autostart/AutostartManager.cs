@@ -50,7 +50,7 @@ namespace WMR_USB_Controller.YUART.Autostart
         /// </summary>
         public void SetToAutostart()
         {
-            if (_autostartCheckbox.IsChecked == null || _autostartRegKey == null) return;
+            if (_autostartCheckbox.IsChecked == null) return;
 
             if (_autostartCheckbox.IsChecked.Value)
             {

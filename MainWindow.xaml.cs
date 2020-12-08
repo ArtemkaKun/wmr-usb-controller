@@ -98,5 +98,14 @@ namespace WMR_USB_Controller
             var regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
+
+        private void TrySetNewSleepDelayValue(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter) return;
+            
+            _sleepModeManager.SetNewSleepDelay(Int32.Parse(SleepDelayInputField.Text));
+            
+            SleepDelayInputField.Text = String.Empty;
+        }
     }
 }
