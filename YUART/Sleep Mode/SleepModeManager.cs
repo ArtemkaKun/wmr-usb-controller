@@ -18,11 +18,13 @@ namespace WMR_USB_Controller.YUART.Sleep_Mode
         private readonly RegistryKey _hololensRegKey = Registry.CurrentUser.OpenSubKey(PathToHololensRegKeys, true);
         private readonly Label _sleepDelayValueLabel;
         private readonly Label _screensaverModeStatusLabel;
+        private readonly CheckBox _screensaverModeCheckbox;
 
-        public SleepModeManager(Label sleepDelayValueLabel, Label screensaverModeStatusLabel)
+        public SleepModeManager(Label sleepDelayValueLabel, Label screensaverModeStatusLabel, CheckBox screensaverModeCheckbox)
         {
             _sleepDelayValueLabel = sleepDelayValueLabel;
             _screensaverModeStatusLabel = screensaverModeStatusLabel;
+            _screensaverModeCheckbox = screensaverModeCheckbox;
         }
 
         /// <summary>
@@ -30,9 +32,16 @@ namespace WMR_USB_Controller.YUART.Sleep_Mode
         /// </summary>
         public void Initialize()
         {
-            UpdateLabelsValues();
+            UpdateUiValues();
         }
 
+        private void UpdateUiValues()
+        {
+            UpdateLabelsValues();
+            
+            SetScreensaverModeCheckboxValue();
+        }
+        
         private void UpdateLabelsValues()
         {
             SetCurrentSleepDelayValue();
@@ -46,7 +55,19 @@ namespace WMR_USB_Controller.YUART.Sleep_Mode
 
         private void SetCurrentScreensaverModeStatus()
         {
-            _screensaverModeStatusLabel.Content = _hololensRegKey.IsExists(ScreensaverModeRegkeyName) && ((int) _hololensRegKey.GetValue(ScreensaverModeRegkeyName)).ConvertIntToBool();
+            _screensaverModeStatusLabel.Content = GetCurrentScreensaverModeStatusFromRegistry();
+        }
+
+        private void SetScreensaverModeCheckboxValue()
+        {
+            if (_screensaverModeCheckbox.IsChecked == null) return;
+
+            _screensaverModeCheckbox.IsChecked = GetCurrentScreensaverModeStatusFromRegistry();
+        }
+
+        private bool GetCurrentScreensaverModeStatusFromRegistry()
+        {
+            return _hololensRegKey.IsExists(ScreensaverModeRegkeyName) && ((int) _hololensRegKey.GetValue(ScreensaverModeRegkeyName)).ConvertIntToBool();
         }
 
         /// <summary>
@@ -78,8 +99,8 @@ namespace WMR_USB_Controller.YUART.Sleep_Mode
         {
             _hololensRegKey.DeleteValue(SleepDelayRegkeyName);
             _hololensRegKey.DeleteValue(ScreensaverModeRegkeyName);
-            
-            UpdateLabelsValues();
+
+            UpdateUiValues();
         }
     }
 }

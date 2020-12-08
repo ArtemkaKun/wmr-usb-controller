@@ -47,7 +47,7 @@ namespace WMR_USB_Controller
 
         private void SetupSleepModeManager()
         {
-            _sleepModeManager = new SleepModeManager(SleepDelayValue, ScreensaverModeStatus);
+            _sleepModeManager = new SleepModeManager(SleepDelayValue, ScreensaverModeStatus, ScreensaverModeStatusCheckbox);
             _sleepModeManager.Initialize();
         }
 

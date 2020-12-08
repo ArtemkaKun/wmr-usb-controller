@@ -36,7 +36,7 @@
                         
                         <Label Content="Status of screensaver mode" Margin="0, 15, 0 ,5" HorizontalAlignment="Center"></Label>
                         <Label Name="ScreensaverModeStatus" HorizontalAlignment="Center"></Label>
-                        <CheckBox Checked="EnableScreensaverMode" Unchecked="DisableScreensaverMode" Content="Enable screensaver mode" FontSize="14" HorizontalAlignment="Center">
+                        <CheckBox Name="ScreensaverModeStatusCheckbox" Checked="EnableScreensaverMode" Unchecked="DisableScreensaverMode" Content="Enable screensaver mode" FontSize="14" HorizontalAlignment="Center">
                             <CheckBox.LayoutTransform>
                                 <ScaleTransform ScaleX="2" ScaleY="2" />
                             </CheckBox.LayoutTransform>
