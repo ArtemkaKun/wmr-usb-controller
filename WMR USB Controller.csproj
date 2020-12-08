@@ -61,9 +61,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="YUART\Autostart\AutostartManager.cs" />
-    <Compile Include="YUART\Sleep Mode\SleepModeController.cs" />
+    <Compile Include="YUART\Sleep Mode\SleepModeManager.cs" />
     <Compile Include="YUART\Tray Icon\TrayIconManager.cs" />
     <Compile Include="YUART\USB\UsbDevicesManager.cs" />
+    <Compile Include="YUART\Utilities\RegkeyChecker.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

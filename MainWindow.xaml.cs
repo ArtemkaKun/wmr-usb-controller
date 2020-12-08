@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using WMR_USB_Controller.YUART.Autostart;
+using WMR_USB_Controller.YUART.Sleep_Mode;
 using WMR_USB_Controller.YUART.Tray_Icon;
 using WMR_USB_Controller.YUART.USB;
 
@@ -15,6 +16,7 @@ namespace WMR_USB_Controller
 
         private AutostartManager _autostartManager;
         private TrayIconManager _trayIconManager;
+        private SleepModeManager _sleepModeManager;
 
         public MainWindow()
         {
@@ -22,7 +24,8 @@ namespace WMR_USB_Controller
 
             SetupTrayIconManager();
             SetupAutostartManager();
-
+            SetupSleepModeManager();
+            
             _usbDevicesManager.Initialize();
 
             DisableWmrDeviceOnStartup();
@@ -38,6 +41,12 @@ namespace WMR_USB_Controller
         {
             _autostartManager = new AutostartManager(AutostartCheckbox);
             _autostartManager.Initialize();
+        }
+
+        private void SetupSleepModeManager()
+        {
+            _sleepModeManager = new SleepModeManager(SleepDelayValue);
+            _sleepModeManager.Initialize();
         }
 
         private void DisableWmrDeviceOnStartup()
