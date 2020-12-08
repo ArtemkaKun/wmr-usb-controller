@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using Microsoft.Win32;
+using WMR_USB_Controller.YUART.Utilities;
 using Application = System.Windows.Application;
 
 namespace WMR_USB_Controller.YUART.Autostart
@@ -41,9 +42,7 @@ namespace WMR_USB_Controller.YUART.Autostart
         {
             if (_autostartCheckbox.IsChecked == null) return;
 
-            var startupAutostartValue = _autostartRegKey.GetValue(_appName);
-
-            _autostartCheckbox.IsChecked = startupAutostartValue != null;
+            _autostartCheckbox.IsChecked = _autostartRegKey.IsExists(_appName);
         }
 
         /// <summary>
@@ -51,7 +50,7 @@ namespace WMR_USB_Controller.YUART.Autostart
         /// </summary>
         public void SetToAutostart()
         {
-            if (_autostartCheckbox.IsChecked == null || _autostartRegKey == null) return;
+            if (_autostartCheckbox.IsChecked == null) return;
 
             if (_autostartCheckbox.IsChecked.Value)
             {
