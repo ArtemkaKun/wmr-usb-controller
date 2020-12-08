@@ -8,14 +8,42 @@
         Title="WMR USB Controller"
         Height="512"
         Width="512"
-        Icon="WMR USB Controller Main Icon.ico"
-        Background="#FF5B5B5B">
+        Icon="WMR USB Controller Main Icon.ico">
     <Grid>
-        <ToggleButton Name="WmrStatusToggle" Content="Disable WMR device" FontSize="24" Width="256" Height="124" Checked="DisableWmrDeviceAction" Unchecked="EnableWmrDeviceAction" HorizontalAlignment="Center"/>
-        <CheckBox Name="AutostartCheckbox" Click="SwitchAutostartStatus" Content="Add to autostart" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="50">
-            <CheckBox.LayoutTransform>
-                <ScaleTransform ScaleX="2" ScaleY="2" />
-            </CheckBox.LayoutTransform>
-        </CheckBox>
+        <TabControl>
+            <TabItem Header="WMR status" FontSize="24">
+                <TabItem.Content>
+                    <StackPanel Background="#FF5B5B5B">
+                        <ToggleButton Name="WmrStatusToggle" Content="Disable WMR device" FontSize="24" Width="256" Height="124" Margin="50" Checked="DisableWmrDeviceAction"
+                                      Unchecked="EnableWmrDeviceAction" HorizontalAlignment="Center" />
+            
+                        <CheckBox Name="AutostartCheckbox" Click="SwitchAutostartStatus" Content="Add to autostart" FontSize="14" Margin="50" HorizontalAlignment="Center">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="2" ScaleY="2" />
+                            </CheckBox.LayoutTransform>
+                        </CheckBox>
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
+
+            <TabItem Header="WMR sleep mode" FontSize="24">
+                <TabItem.Content>
+                    <StackPanel Background="#FF5B5B5B">
+                        <Label Content="Current sleep delay in minutes" Margin="25" HorizontalAlignment="Center"></Label>
+                        <Label Name="SleepDelayValue" HorizontalAlignment="Center"></Label>
+                        
+                        <Label Content="Status of screensaver mode" Margin="25" HorizontalAlignment="Center"></Label>
+                        <Label Name="ScreensaverModeStatus" Margin="25" HorizontalAlignment="Center"></Label>
+                        <CheckBox Name="ScreensaverCheckbox" Click="SwitchAutostartStatus" Content="Enable screensaver mode" FontSize="14" HorizontalAlignment="Center">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="2" ScaleY="2" />
+                            </CheckBox.LayoutTransform>
+                        </CheckBox>
+                        
+                        <Button Name="ResetSleepModeSettings" Content="Reset sleep mode changes" Width="300" Height="50" Margin="50"></Button>
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
