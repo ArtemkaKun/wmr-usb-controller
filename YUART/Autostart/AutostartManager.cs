@@ -1,7 +1,8 @@
-﻿using System.Windows.Controls;
-using Microsoft.Win32;
-using WMR_USB_Controller.YUART.Utilities;
+﻿using System;
+using System.Windows.Controls;
+using IWshRuntimeLibrary;
 using Application = System.Windows.Application;
+using File = System.IO.File;
 
 namespace WMR_USB_Controller.YUART.Autostart
 {
@@ -10,13 +11,16 @@ namespace WMR_USB_Controller.YUART.Autostart
     /// </summary>
     public sealed class AutostartManager
     {
-        private const string PathToAutostartRegKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
-
-        private readonly RegistryKey _autostartRegKey = Registry.CurrentUser.OpenSubKey(PathToAutostartRegKey, true);
-        private readonly string _appExecutionPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        private const string PathToTrayIcon = "WMR USB Controller Main Icon.ico";
+        
+        private readonly WshShell _wshShell = new WshShell();
+        private readonly string _workingDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        private readonly string _assemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
         private readonly CheckBox _autostartCheckbox;
 
         private string _appName;
+        private string _autostartShortcutPath;
+        private string _iconLocation;
 
         public AutostartManager(CheckBox autostartCheckbox)
         {
@@ -30,6 +34,10 @@ namespace WMR_USB_Controller.YUART.Autostart
         {
             SetApplicationName();
 
+            SetAutostartShortcutPath();
+            
+            SetIconLocation();
+            
             SetAutostartCheckboxValue();
         }
 
@@ -38,11 +46,21 @@ namespace WMR_USB_Controller.YUART.Autostart
             _appName = Application.Current.MainWindow?.Title;
         }
 
+        private void SetAutostartShortcutPath()
+        {
+            _autostartShortcutPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}\{_appName}.lnk";
+        }
+
+        private void SetIconLocation()
+        {
+            _iconLocation = $"{_workingDirectory}{PathToTrayIcon}";
+        }
+
         private void SetAutostartCheckboxValue()
         {
             if (_autostartCheckbox.IsChecked == null) return;
 
-            _autostartCheckbox.IsChecked = _autostartRegKey.IsExists(_appName);
+            _autostartCheckbox.IsChecked = File.Exists(_autostartShortcutPath);
         }
 
         /// <summary>
@@ -54,12 +72,22 @@ namespace WMR_USB_Controller.YUART.Autostart
 
             if (_autostartCheckbox.IsChecked.Value)
             {
-                _autostartRegKey.SetValue(_appName, _appExecutionPath);
+                CreateNewAutostartShortcut();
             }
             else
             {
-                _autostartRegKey.DeleteValue(_appName, false);
+                File.Delete(_autostartShortcutPath);
             }
+        }
+
+        private void CreateNewAutostartShortcut()
+        {
+            var shortcut = (IWshShortcut) _wshShell.CreateShortcut(_autostartShortcutPath);
+            shortcut.Description = _appName;
+            shortcut.WorkingDirectory = _workingDirectory;
+            shortcut.TargetPath = _assemblyLocation;
+            shortcut.IconLocation = _iconLocation;
+            shortcut.Save();
         }
     }
 }
