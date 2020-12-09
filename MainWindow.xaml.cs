@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using WMR_USB_Controller.YUART.Autostart;
-using WMR_USB_Controller.YUART.Sleep_Mode;
+using WMR_USB_Controller.YUART.Holographic.Sleep_Mode;
 using WMR_USB_Controller.YUART.Tray_Icon;
 using WMR_USB_Controller.YUART.USB;
 

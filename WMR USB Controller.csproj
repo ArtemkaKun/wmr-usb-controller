@@ -61,7 +61,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="YUART\Autostart\AutostartManager.cs" />
-    <Compile Include="YUART\Sleep Mode\SleepModeManager.cs" />
+    <Compile Include="YUART\Holographic\HolographicManager.cs" />
+    <Compile Include="YUART\Holographic\Sleep Mode\SleepModeManager.cs" />
     <Compile Include="YUART\Tray Icon\TrayIconManager.cs" />
     <Compile Include="YUART\USB\UsbDevicesManager.cs" />
     <Compile Include="YUART\Utilities\IntBoolConverter.cs" />
