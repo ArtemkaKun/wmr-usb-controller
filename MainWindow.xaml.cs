@@ -3,7 +3,8 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using WMR_USB_Controller.YUART.Autostart;
-using WMR_USB_Controller.YUART.Sleep_Mode;
+using WMR_USB_Controller.YUART.Holographic.Sleep_Mode;
+using WMR_USB_Controller.YUART.Holographic.VirtualScreens;
 using WMR_USB_Controller.YUART.Tray_Icon;
 using WMR_USB_Controller.YUART.USB;
 
@@ -19,6 +20,7 @@ namespace WMR_USB_Controller
         private AutostartManager _autostartManager;
         private TrayIconManager _trayIconManager;
         private SleepModeManager _sleepModeManager;
+        private VirtualScreensManager _virtualScreensManager;
 
         public MainWindow()
         {
@@ -27,6 +29,7 @@ namespace WMR_USB_Controller
             SetupTrayIconManager();
             SetupAutostartManager();
             SetupSleepModeManager();
+            SetupVirtualScreensManager();
             
             _usbDevicesManager.Initialize();
 
@@ -49,6 +52,12 @@ namespace WMR_USB_Controller
         {
             _sleepModeManager = new SleepModeManager(SleepDelayValue, ScreensaverModeStatus, ScreensaverModeStatusCheckbox);
             _sleepModeManager.Initialize();
+        }
+
+        private void SetupVirtualScreensManager()
+        {
+            _virtualScreensManager = new VirtualScreensManager(VirtualScreensCheckbox);
+            _virtualScreensManager.Initialize();
         }
 
         private void DisableWmrDeviceOnStartup()
@@ -121,6 +130,16 @@ namespace WMR_USB_Controller
         private void ResetSleepModeValues(object sender, RoutedEventArgs e)
         {
             _sleepModeManager.ResetSleepModeValues();
+        }
+
+        private void EnableVirtualScreens(object sender, RoutedEventArgs e)
+        {
+            _virtualScreensManager.SetVirtualScreensStatus(true);
+        }
+        
+        private void DisableVirtualScreens(object sender, RoutedEventArgs e)
+        {
+            _virtualScreensManager.SetVirtualScreensStatus(false);
         }
     }
 }
