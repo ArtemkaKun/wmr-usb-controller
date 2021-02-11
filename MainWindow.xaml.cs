@@ -15,6 +15,9 @@ namespace WMR_USB_Controller
     /// </summary>
     public partial class MainWindow
     {
+        private const string DisableWMRToggleText = "Disable WMR device";
+        private const string EnableWMRToggleText = "Enable WMR device";
+        
         private readonly UsbDevicesManager _usbDevicesManager = new UsbDevicesManager();
 
         private AutostartManager _autostartManager;
@@ -94,6 +97,7 @@ namespace WMR_USB_Controller
         public void ChangeWmrDeviceState(bool newState)
         {
             _usbDevicesManager.ActivateWmrDevice(newState);
+            WmrStatusToggle.Content = newState ? DisableWMRToggleText : EnableWMRToggleText;
             WmrStatusToggle.IsChecked = !newState;
         }
 
