@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Text.RegularExpressions;
+using System.Management.Automation;
 using System.Windows;
 using System.Windows.Input;
 using WMR_USB_Controller.YUART.Autostart;
@@ -17,7 +19,7 @@ namespace WMR_USB_Controller
     {
         private const string DisableWMRToggleText = "Disable WMR device";
         private const string EnableWMRToggleText = "Enable WMR device";
-        
+        PowerShell ps = PowerShell.Create();
         private readonly UsbDevicesManager _usbDevicesManager = new UsbDevicesManager();
 
         private AutostartManager _autostartManager;
@@ -99,6 +101,11 @@ namespace WMR_USB_Controller
             _usbDevicesManager.ActivateWmrDevice(newState);
             WmrStatusToggle.Content = newState ? DisableWMRToggleText : EnableWMRToggleText;
             WmrStatusToggle.IsChecked = !newState;
+        }
+
+        private void StartWMR(object sender, RoutedEventArgs e) {
+            ps.Commands.Clear();
+            ps.AddScript(File.ReadAllText(@"resolution_script.ps1")).Invoke();
         }
 
         private void SwitchAutostartStatus(object sender, RoutedEventArgs e)

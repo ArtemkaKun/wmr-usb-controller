@@ -16,6 +16,7 @@
                     <StackPanel Background="#FF5B5B5B">
                         <ToggleButton Name="WmrStatusToggle" Content="Disable WMR device" FontSize="24" Width="256" Height="124" Margin="50" Checked="DisableWmrDeviceAction"
                                       Unchecked="EnableWmrDeviceAction" HorizontalAlignment="Center" />
+                        <Button Name="WMRStartButton" Content="Start WMR" FontSize="24" Width="256" Height="124" Margin="50" Click="StartWMR" ClickMode="Press" HorizontalAlignment="Center" />
                         <CheckBox Name="VirtualScreensCheckbox" Content="Disable virtual screens" FontSize="14" Margin="10" HorizontalAlignment="Center" Checked="DisableVirtualScreens" Unchecked="EnableVirtualScreens">
                             <CheckBox.LayoutTransform>
                                 <ScaleTransform ScaleX="2" ScaleY="2" />
