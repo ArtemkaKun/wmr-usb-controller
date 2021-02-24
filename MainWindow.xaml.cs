@@ -3,12 +3,14 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Management.Automation;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using WMR_USB_Controller.YUART.Autostart;
 using WMR_USB_Controller.YUART.Holographic.Sleep_Mode;
 using WMR_USB_Controller.YUART.Holographic.VirtualScreens;
 using WMR_USB_Controller.YUART.Tray_Icon;
 using WMR_USB_Controller.YUART.USB;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace WMR_USB_Controller
 {
@@ -19,9 +21,11 @@ namespace WMR_USB_Controller
     {
         private const string DisableWMRToggleText = "Disable WMR device";
         private const string EnableWMRToggleText = "Enable WMR device";
-        PowerShell ps = PowerShell.Create();
+        private const double WindowToScreenSizeRatio = 4;
+        
         private readonly UsbDevicesManager _usbDevicesManager = new UsbDevicesManager();
-
+        private readonly PowerShell ps = PowerShell.Create();
+        
         private AutostartManager _autostartManager;
         private TrayIconManager _trayIconManager;
         private SleepModeManager _sleepModeManager;
@@ -31,6 +35,8 @@ namespace WMR_USB_Controller
         {
             InitializeComponent();
 
+            SetProgramWindowSizeWithRatio();
+            
             SetupTrayIconManager();
             SetupAutostartManager();
             SetupSleepModeManager();
@@ -39,6 +45,17 @@ namespace WMR_USB_Controller
             _usbDevicesManager.Initialize();
 
             DisableWmrDeviceOnStartup();
+        }
+        
+        private void SetProgramWindowSizeWithRatio()
+        {
+            var primaryScreenBounds = Screen.PrimaryScreen.Bounds;
+
+            var heightScreenSizeWithRatio = primaryScreenBounds.Height / WindowToScreenSizeRatio;
+            
+            Width = heightScreenSizeWithRatio;
+            
+            Height = heightScreenSizeWithRatio;
         }
 
         private void SetupTrayIconManager()
@@ -105,6 +122,7 @@ namespace WMR_USB_Controller
 
         private void StartWMR(object sender, RoutedEventArgs e) {
             ps.Commands.Clear();
+            EnableWmrDeviceAction(null, null);
             ps.AddScript(File.ReadAllText(@"resolution_script.ps1")).Invoke();
         }
 
